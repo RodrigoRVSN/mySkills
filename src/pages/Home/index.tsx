@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, Text, TextInput, View } from "react-native";
+import {
+  FlatList,
+  Keyboard,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { Button } from "../../components/Button";
 import { Skillcard } from "../../components/Skillcard";
 import { styles } from "./styles";
@@ -24,6 +32,11 @@ export function Home() {
       setMySkills((oldState) => [...oldState, data]);
       setNewSkill("");
     }
+    Keyboard.dismiss();
+  }
+
+  function handleRemoveSkill(id: string) {
+    setMySkills((oldState) => oldState.filter((skill) => skill.id !== id));
   }
 
   useEffect(() => {
@@ -39,27 +52,42 @@ export function Home() {
 
   return (
     <>
-      <View style={styles.container}>
-        <Text style={styles.title}>Hello, Rodrigo</Text>
-        <Text style={styles.greetings}>{gretting}</Text>
-        <TextInput
-          style={styles.input}
-          placeholder={"Skill "}
-          placeholderTextColor="#555"
-          onChangeText={(text) => setNewSkill(text)}
-          value={newSkill}
-        />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Hello, Rodrigo</Text>
+          <Text style={styles.greetings}>{gretting}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={"Skill "}
+            placeholderTextColor="#555"
+            onChangeText={(text) => setNewSkill(text)}
+            value={newSkill}
+          />
 
-        <Button handleNewAddSkill={handleNewAddSkill} />
+          <Button
+            onPress={handleNewAddSkill}
+            activeOpacity={0.8}
+            title={"ADD"}
+          />
 
-        <Text style={[styles.title, { marginVertical: 50 }]}>My Skills</Text>
-
-        <FlatList
-          data={mySkills}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Skillcard skill={item.name} />}
-        />
-      </View>
+          <Text style={[styles.title, { marginVertical: 50 }]}>My Skills</Text>
+          <View style={{ height: 350 }}>
+            <FlatList
+              style={{ paddingVertical: 20 }}
+              showsVerticalScrollIndicator={false}
+              data={mySkills}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <Skillcard
+                  skill={item.name}
+                  activeOpacity={0.8}
+                  onPress={() => handleRemoveSkill(item.id)}
+                />
+              )}
+            />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
     </>
   );
 }
