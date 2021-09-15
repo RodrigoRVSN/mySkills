@@ -4,14 +4,24 @@ import { Button } from "../../components/Button";
 import { Skillcard } from "../../components/Skillcard";
 import { styles } from "./styles";
 
+interface SkillData {
+  id: string;
+  name: string;
+  date?: Date;
+}
+
 export function Home() {
   const [newSkill, setNewSkill] = useState("");
-  const [mySkills, setMySkills] = useState([]);
-  const [greeting, setGreeting] = useState("");
+  const [mySkills, setMySkills] = useState<SkillData[]>([]);
+  const [gretting, setGretting] = useState("");
 
   function handleNewAddSkill() {
     if (newSkill.length > 0) {
-      setMySkills((oldState) => [...oldState, newSkill]);
+      const data = {
+        id: String(new Date().getTime()),
+        name: newSkill,
+      };
+      setMySkills((oldState) => [...oldState, data]);
       setNewSkill("");
     }
   }
@@ -19,11 +29,11 @@ export function Home() {
   useEffect(() => {
     const currentHour = new Date().getHours();
     if (currentHour < 12) {
-      setGreeting("Good Morning");
+      setGretting("Good Morning");
     } else if (currentHour >= 12 && currentHour < 18) {
-      setGreeting("Good Afternoon");
+      setGretting("Good Afternoon");
     } else {
-      setGreeting("Good Evening");
+      setGretting("Good Evening");
     }
   }, []);
 
@@ -31,7 +41,7 @@ export function Home() {
     <>
       <View style={styles.container}>
         <Text style={styles.title}>Hello, Rodrigo</Text>
-        <Text style={styles.greetings}>{greeting}</Text>
+        <Text style={styles.greetings}>{gretting}</Text>
         <TextInput
           style={styles.input}
           placeholder={"Skill "}
@@ -46,8 +56,8 @@ export function Home() {
 
         <FlatList
           data={mySkills}
-          keyExtractor={(item) => item}
-          renderItem={({ item }) => <Skillcard skill={item} />}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <Skillcard skill={item.name} />}
         />
       </View>
     </>
