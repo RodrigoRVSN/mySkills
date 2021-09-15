@@ -1,12 +1,5 @@
-import React, { useState } from "react";
-import {
-  FlatList,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { FlatList, Text, TextInput, View } from "react-native";
 import { Button } from "../../components/Button";
 import { Skillcard } from "../../components/Skillcard";
 import { styles } from "./styles";
@@ -14,6 +7,7 @@ import { styles } from "./styles";
 export function Home() {
   const [newSkill, setNewSkill] = useState("");
   const [mySkills, setMySkills] = useState([]);
+  const [greeting, setGreeting] = useState("");
 
   function handleNewAddSkill() {
     if (newSkill.length > 0) {
@@ -22,13 +16,25 @@ export function Home() {
     }
   }
 
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      setGreeting("Good Morning");
+    } else if (currentHour >= 12 && currentHour < 18) {
+      setGreeting("Good Afternoon");
+    } else {
+      setGreeting("Good Evening");
+    }
+  }, []);
+
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.title}>Hello, Rodrigo</Text>
+        <Text style={styles.greetings}>{greeting}</Text>
         <TextInput
           style={styles.input}
-          placeholder={"Rodrigo"}
+          placeholder={"Skill "}
           placeholderTextColor="#555"
           onChangeText={(text) => setNewSkill(text)}
           value={newSkill}

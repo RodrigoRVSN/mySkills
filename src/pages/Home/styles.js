@@ -16,4 +16,7 @@ export const styles = StyleSheet.create({
     padding: Platform.OS === "ios" ? 20 : 15,
     borderRadius: 7,
   },
+  greetings: {
+    color: "#FFF",
+  },
 });
