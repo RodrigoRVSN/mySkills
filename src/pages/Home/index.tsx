@@ -54,9 +54,12 @@ export function Home() {
     <>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
-          <Text style={styles.title}>Hello, Rodrigo</Text>
+          <Text style={styles.title} testID="hello">
+            Hello, Rodrigo
+          </Text>
           <Text style={styles.greetings}>{gretting}</Text>
           <TextInput
+            testID="input-new"
             style={styles.input}
             placeholder={"Skill "}
             placeholderTextColor="#555"
@@ -65,6 +68,7 @@ export function Home() {
           />
 
           <Button
+            testID="button-add"
             onPress={handleNewAddSkill}
             activeOpacity={0.8}
             title={"ADD"}
@@ -72,19 +76,22 @@ export function Home() {
 
           <Text style={[styles.title, { marginVertical: 50 }]}>My Skills</Text>
           <View style={{ height: 350 }}>
-            <FlatList
-              style={{ paddingVertical: 20 }}
-              showsVerticalScrollIndicator={false}
-              data={mySkills}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <Skillcard
-                  skill={item.name}
-                  activeOpacity={0.8}
-                  onPress={() => handleRemoveSkill(item.id)}
-                />
-              )}
-            />
+            {mySkills && (
+              <FlatList
+                testID="flat-list-skills"
+                data={mySkills}
+                style={{ paddingVertical: 20 }}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <Skillcard
+                    skill={item.name}
+                    activeOpacity={0.8}
+                    onPress={() => handleRemoveSkill(item.id)}
+                  />
+                )}
+              />
+            )}
           </View>
         </View>
       </TouchableWithoutFeedback>
