@@ -16,7 +16,6 @@ describe("Example", () => {
   it("check new skill", async () => {
     const inputNewSkill = await element(by.id("input-new"));
     const buttonAdd = await element(by.id("button-add"));
-    const flatListSkills = await element(by.id("flat-list-skills"));
 
     await inputNewSkill.tap();
     await inputNewSkill.typeText("Typescript");
