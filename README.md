@@ -9,6 +9,7 @@
 
 - React Native CLI
 - Typescript
+- Detox (test E2E)
 
 ---
 
